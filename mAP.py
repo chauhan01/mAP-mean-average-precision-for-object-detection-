@@ -6,7 +6,6 @@ import cv2
 
 data = pd.read_csv('ground truth.csv')
 preds = pd.read_csv('preds.csv')
-data.head()
 
 
 data['xmin_pred'] = preds.xmin
