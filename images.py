@@ -1,17 +1,7 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[5]:
-
 
 import pandas as pd
 import numpy as np
 import cv2
-from decimal import Decimal, getcontext
-getcontext().prec = 2
-
-
-# In[6]:
 
 
 data = pd.read_csv('ground truth.csv')
@@ -19,23 +9,11 @@ preds = pd.read_csv('preds.csv')
 data.head()
 
 
-# In[7]:
-
-
 data['xmin_pred'] = preds.xmin
 data['ymin_pred'] = preds.ymin
 data['xmax_pred'] = preds.xmax
 data['ymax_pred'] = preds.ymax
 
-
-# In[8]:
-
-
-
-data.head()
-
-
-# In[9]:
 
 
 def IOU(df):
@@ -59,9 +37,6 @@ def IOU(df):
     return iou
 
 
-# In[10]:
-
-
 # creating a evaluation table
 eval_table = pd.DataFrame()
 eval_table['image_name'] = data.image_name
@@ -72,9 +47,6 @@ eval_table['IOU'] = data.apply(IOU, axis = 1)
 # creating column 'TP/FP' which will store TP for True positive and FP for False positive
 # if IOU is greater than 0.5 then TP else FP
 eval_table['TP/FP'] = eval_table['IOU'].apply(lambda x: 'TP' if x>=0.5 else 'FP')
-
-
-# In[11]:
 
 
 # calculating Precision and recall
@@ -104,28 +76,15 @@ for index , row in eval_table.iterrows():
     Recall.append(Rec)
 
 
-# In[12]:
-
-
 eval_table['Precision'] = Precision
 eval_table['Recall'] = Recall
-eval_table
 
-
-# In[13]:
 
 
 #calculating Interpolated Precision
 eval_table['IP'] = eval_table.groupby('Recall')['Precision'].transform('max')
 
 
-# In[14]:
-
-
-eval_table
-
-
-# In[15]:
 
 
 prec_at_rec = []
@@ -142,7 +101,6 @@ print('11 point precision is ', prec_at_rec)
 print('\nmap is ', avg_prec)
 
 
-# In[ ]:
 
 
 
